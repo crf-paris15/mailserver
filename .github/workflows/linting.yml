@@ -7,9 +7,13 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v7
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26
       - name: Install pnpm
         uses: pnpm/action-setup@v6
-      - name: Use Node.js
+      - name: Cache pnpm store
         uses: actions/setup-node@v6
         with:
           cache: "pnpm"
