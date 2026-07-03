@@ -11,7 +11,7 @@ const app = express();
 app.disable("x-powered-by");
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/send-email", async (req: express.Request, res: express.Response) => {
+app.post("/event", async (req: express.Request, res: express.Response) => {
   if (!apiKeyAuth(req)) {
     return res.status(401).json({ error: "Unauthorized" });
   }
@@ -21,6 +21,8 @@ app.post("/send-email", async (req: express.Request, res: express.Response) => {
   if (body === undefined) {
     return res.status(400).json({ error: "Missing required fields" });
   }
+
+  console.log(body);
 
   const to = body.to || "unknown";
 
