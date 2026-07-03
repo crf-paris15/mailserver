@@ -11,7 +11,12 @@ const app = express();
 app.disable("x-powered-by");
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/event", async (req: express.Request, res: express.Response) => {
+app.get("/event", (req: express.Request, res: express.Response) => {
+  console.log("GET /event", req.query);
+  res.status(200).json({ message: "OK" });
+});
+
+app.post("/event", async (req: express.Request, res: express.Response) => {
   if (!apiKeyAuth(req)) {
     return res.status(401).json({ error: "Unauthorized" });
   }
