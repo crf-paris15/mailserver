@@ -18,6 +18,7 @@ app.get("/event", (req: express.Request, res: express.Response) => {
 
 app.post("/event", async (req: express.Request, res: express.Response) => {
   if (!apiKeyAuth(req)) {
+    console.log("failed");
     return res.status(401).json({ error: "Unauthorized" });
   }
 
