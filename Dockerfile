@@ -1,4 +1,4 @@
-FROM node:26-alpine AS alpine
+FROM node:24-alpine AS alpine
 
 # ------------------------- BASE -------------------------
 FROM alpine AS base
