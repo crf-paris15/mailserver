@@ -6,6 +6,7 @@ import * as MAIL_DATA from "./mail.json" with { type: "json" };
 
 const SMTP_CLIENT = process.env.SMTP_CLIENT || "";
 const CLIENT = new postmark.ServerClient(SMTP_CLIENT);
+
 const app = express();
 app.disable("x-powered-by");
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ app.post("/send-email", async (req: express.Request, res: express.Response) => {
   const to = body.to || "unknown";
 
   try {
-    console.log({
+    await CLIENT.sendEmail({
       From: "benevolat.paris15@croix-rouge.fr",
       To: to,
       Subject: MAIL_DATA.default.Subject,
