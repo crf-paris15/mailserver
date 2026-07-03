@@ -1,0 +1,35 @@
+name: Deploy last image on crf.tools
+
+on:
+  workflow_dispatch:
+    inputs:
+      site:
+        description: "Which env to deploy to"
+        type: choice
+        options:
+          - "tools"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-image:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: docker-compose pull and down
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /var/docker/${{ inputs.site }}
+            docker compose pull
+            docker compose down mailserver
+            docker compose up -d

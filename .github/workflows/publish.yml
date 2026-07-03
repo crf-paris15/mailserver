@@ -1,0 +1,68 @@
+name: Create and publish a Docker image
+
+permissions:
+  contents: read
+
+on:
+  push:
+    tags:
+      - "*"
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-push-image:
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.9.0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: "pnpm"
+          node-version: 26
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/crf-paris15/mailserver
+
+      - name: Build and push Docker image for mailserver
+        id: push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            GIT_TAG=${{ github.ref_name }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-name: ${{ env.REGISTRY }}/crf-paris15/mailserver
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true

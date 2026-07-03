@@ -1,0 +1,35 @@
+{
+  "name": "mailserver",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon src/app.ts",
+    "mock": "pnpx ngrok http 3003",
+    "lint": "eslint .",
+    "preinstall": "npx only-allow pnpm",
+    "prettier:format": "prettier --write \"**/*.{ts,tsx,js,md,mdx,css,yaml}\"",
+    "prettier:check": "prettier --check \"**/*.{ts,tsx,js,md,mdx,css,yaml}\""
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.62.1",
+    "@typescript-eslint/parser": "^8.62.1",
+    "eslint": "^10.6.0",
+    "eslint-config-prettier": "^10.1.8",
+    "nodemon": "^3.1.14",
+    "prettier": "3.9.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.62.1"
+  },
+  "engines": {
+    "node": "26"
+  },
+  "packageManager": "pnpm@11.9.0",
+  "type": "module"
+}
