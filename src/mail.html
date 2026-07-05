@@ -374,38 +374,28 @@
                               "
                               valign="middle"
                             >
-                              <form
-                                method="post"
-                                action="https://meetings.crf.tools/index.php/booking_cancellation/of/{{id}}/"
-                                class="inline-form"
+                              <a
+                                type="submit"
+                                style="
+                                  background: #6c6c6c;
+                                  color: #ffffff;
+                                  font-family:
+                                    &quot;Helvetica Neue&quot;, Arial,
+                                    sans-serif;
+                                  font-size: 15px;
+                                  font-weight: normal;
+                                  line-height: 120%;
+                                  margin: 0;
+                                  text-decoration: none;
+                                  text-transform: none;
+                                  border: 0;
+                                  cursor: pointer;
+                                  padding: 20px 30px;
+                                "
+                                href="https://mail.crf.tools/cancel/{{id}}"
                               >
-                                <input
-                                  type="hidden"
-                                  name="cancellation_reason"
-                                  value="mail_cancellation"
-                                />
-                                <button
-                                  type="submit"
-                                  style="
-                                    background: #6c6c6c;
-                                    color: #ffffff;
-                                    font-family:
-                                      &quot;Helvetica Neue&quot;, Arial,
-                                      sans-serif;
-                                    font-size: 15px;
-                                    font-weight: normal;
-                                    line-height: 120%;
-                                    margin: 0;
-                                    text-decoration: none;
-                                    text-transform: none;
-                                    border: 0;
-                                    cursor: pointer;
-                                    padding: 20px 30px;
-                                  "
-                                >
-                                  Annuler ma réservation
-                                </button>
-                              </form>
+                                Annuler ma réservation
+                              </a>
                             </td>
                           </tr>
                         </table>

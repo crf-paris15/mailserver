@@ -7,7 +7,8 @@ import path from "node:path";
 
 const SMTP_CLIENT = process.env.SMTP_CLIENT || "";
 const CLIENT = new postmark.ServerClient(SMTP_CLIENT);
-const EA_URL = "https://meetings.crf.tools/index.php/api/v1/";
+const EA_URL = "https://meetings.crf.tools/index.php/";
+const EA_API = "api/v1/";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -23,6 +24,30 @@ app.get("/event", (req: express.Request, res: express.Response) => {
   res.status(200).json({ message: "OK" });
 });
 
+app.get("/cancel/:id", async (req: express.Request, res: express.Response) => {
+  console.log("GET /cancel/:id", req.params.id);
+
+  const rawResponse = await fetch(
+    EA_URL +
+      "booking_cancellation/of/" +
+      req.params.id +
+      "?cancellation_reason=mail",
+    {
+      method: "POST",
+    },
+  );
+
+  if ((await rawResponse.status) !== 200) {
+    return res
+      .status(400)
+      .send(
+        "Erreur lors de l'annulation du rendez-vous. Contactez-nous à benevolat.paris15@croix-rouge.fr.",
+      );
+  }
+
+  res.status(200).send("Rendez-vous annulé avec succès.");
+});
+
 app.post("/event", async (req: express.Request, res: express.Response) => {
   if (!apiKeyAuth(req)) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -33,7 +58,7 @@ app.post("/event", async (req: express.Request, res: express.Response) => {
   }
 
   const rawResponse = await fetch(
-    EA_URL + "customers/" + req.body.payload.id_users_customer,
+    EA_URL + EA_API + "customers/" + req.body.payload.id_users_customer,
     {
       method: "GET",
       headers: {
@@ -43,7 +68,12 @@ app.post("/event", async (req: express.Request, res: express.Response) => {
   );
 
   if ((await rawResponse.status) !== 200) {
-    console.log(EA_URL + "customers/" + req.body.payload.id_users_customer);
+    console.log(
+      EA_URL +
+        EA_API +
+        "booking_cancellation/of/{{id}}//" +
+        req.body.payload.id_users_customer,
+    );
     console.log("Error fetching customer data:", await rawResponse.text());
     return res.status(502).json({ error: "Unable to fetch customer data" });
   }
@@ -80,6 +110,7 @@ app.post("/event", async (req: express.Request, res: express.Response) => {
         name: response?.firstName,
         date: date,
         heure: heure,
+        id: id,
       }),
       MessageStream: "outbound",
     });
