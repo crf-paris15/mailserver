@@ -1,0 +1,11 @@
+Bonjour {{name}},
+
+Nous te confirmons ta réservation pour la réunion d'accueil des nouveaux bénévoles le {{date}} à {{heure}}.
+
+Nous avons hâte de te voir !
+
+--
+
+L'équipe de recrutement de l'Unité locale
+Croix-Rouge française de Paris 15
+paris15.croix-rouge.fr
