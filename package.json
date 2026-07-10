@@ -13,7 +13,7 @@
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "postmark": "^4.0.7"
+    "postmark": "^5.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
